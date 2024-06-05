@@ -36,6 +36,7 @@ const Product = () => {
                 spaceBetween={1}
                 slidesPerView={4}
             >
+              
                 {images.map((image, index) => (
                     <SwiperSlide key={index}>
                         <img src={image.link} alt="" className='w-20 h-24 rounded object-cover' />
