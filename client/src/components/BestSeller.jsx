@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import Item from './Item';
 import new_collections from "../Assets/new_collections"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Navigation,Autoplay} from 'swiper/modules'
@@ -31,7 +32,7 @@ const BestSellser = () => {
         <Swiper
           modules={[Navigation,Autoplay]}
           spaceBetween={10}
-          slidesPerView={1}
+          slidesPerView={2}
           loop={true}
           autoplay={{
             delay:2000,
@@ -60,19 +61,7 @@ const BestSellser = () => {
           {
             products.map((item)=>(
               <SwiperSlide key={item.id}>
-                <div className='rounded-lg border max-h-[450px] max-w-72 mx-auto'>
-                  <Link to={`/product/${item.id}`}>
-                      <img src={item.image} alt="" className='mx-auto w-full hover:scale-105 transition-all duration-300 max-h-80 object-center' />
-                  </Link>
-
-                  <div className='mt-4 px-4'>
-                    <h4 className='text-base font-semibold mb-2'>{item.name}</h4>
-                    <div className='flex justify-between py-2'>
-                      <p className='text-black/50'>ZARA</p>
-                      <p className='font-semibold text-lg'>${item.new_price}</p>
-                    </div>
-                  </div>
-                </div>
+                  <Item item={item} />
               </SwiperSlide>
             ))
           }
