@@ -3,7 +3,7 @@ import { MdAdd } from 'react-icons/md'
 
 const AddAddress = () => {
   return (
-    <div className='pt-28 pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4'>
+    <div className='pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4'>
         <div>
             <h2 className='sm:text-xl font-semibold'>Add New Address</h2>
             <hr className='mb-4' />

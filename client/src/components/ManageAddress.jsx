@@ -34,14 +34,21 @@ const ManageAddress = () => {
 
             {/* right section */}
             <div className='flex-1'>
-              <div className='flex flex-col space-y-4 '>
+              <div className='flex flex-col space-y-4 font-xpoppins '>
                 {
                   saveAddresses.map((address)=>(
                     <div key={address._id} className='border px-4 py-2 flex rounded justify-between'>
-                      <div className='flex space-y-2 flex-col font-xlato'>
-                        <h2 className='font-semibold sm:text-lg'>{address.nameOfPerson}</h2>
-                        <h3 className='text-gray-600 flex items-center space-x-1  '><span className=''><SlLocationPin className='sm:w-4 sm:h-4 h-full' /></span><span>{address.BuildingInfo + ", "+ address.AreaInfo + ", " + address.City + "-" + address.pinCode + ", "+ address.state + ", "+address.country}</span></h3>
-                        <h3 className='text-gray-600 flex items-center space-x-1 '><span><SlPhone /></span><span>{address.phoneNumber}</span></h3>
+                      <div className='flex space-y-2 flex-col'>
+                        <h2 className='font-semibold sm:text-lg font-xlato'>{address.nameOfPerson}</h2>
+                        <div>
+                          <h2 className='font-semibold text-sm text-gray-800'>Address</h2>
+                          <h3 className='text-gray-400 font-xpoppins'>{address.BuildingInfo + ", "+ address.AreaInfo + ", " + address.City + "-" + address.pinCode + ", "+ address.state + ", "+address.country}</h3>
+                        </div>
+                        <div>
+                          <h2 className='font-semibold text-sm text-gray-800'>Phone</h2>
+                          <h3 className='text-gray-400'>{address.phoneNumber}</h3>
+                        </div>
+                        
                       </div>
 
                       <div className='flex space-x-3 font-xlato items-start'>

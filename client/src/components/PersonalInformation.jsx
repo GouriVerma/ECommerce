@@ -108,7 +108,7 @@ const PersonalInformation = () => {
 
               <div>
                 {disabled?
-                <button className='md:sm:text-lg bg-slate-800 text-white px-4 py-2 rounded-sm w-full md:w-64' onClick={()=>setDisabled(!disabled)}>CLICK TO UPDATE DETAILS</button>
+                <button className='md:sm:text-lg bg-slate-800 text-white px-4 py-2 rounded-sm w-full md:w-64' onClick={()=>setDisabled(!disabled)}>UPDATE DETAILS</button>
                 :<button className='md:sm:text-lg bg-slate-800 text-white px-4 py-2 rounded-sm w-full md:w-64' onClick={handleUpdateDetails}>SAVE DETAILS</button>
                 }
               </div>

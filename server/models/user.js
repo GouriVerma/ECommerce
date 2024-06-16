@@ -127,7 +127,52 @@ const userSchema=Schema({
             default:0,
             required:[true,"Please enter total amount"]
         }
-    }
+    },
+    savedAddresses:[
+        {
+            name:{
+                type:String,
+                required:[true,"Please enter name in address"]
+            },
+            email:{
+                type:String,
+                required:[true,"Please enter email in address"],
+                validate:[validator.isEmail,"Please enter a valid email"]
+            },
+            phone:{
+                type:String,
+                required:[true,"Please enter phone in address"],
+                
+            },
+            houseAddress:{
+                type:String,
+                required:[true,"Please enter house address in address"],   
+            },
+            areaAddress:{
+                type:String,
+                required:[true,"Please enter area address in address"],   
+            },
+            pinCode:{
+                type:Number,
+                required:[true,"Please enter pincode in address"],   
+            },
+            city:{
+                type:String,
+                required:[true,"Please enter city in address"],   
+            },
+            state:{
+                type:String,
+                required:[true,"Please enter state in address"],   
+            },
+            country:{
+                type:String,
+                required:[true,"Please enter country in address"],
+                default:"India"   
+            },
+
+            
+        }
+    ]
 },{timestamps:true})
 
 userSchema.pre("save",async function(next){

@@ -8,7 +8,8 @@ const sendEmail=require("../utils/sendEmail")
 const handleUserSignUp=handleAsyncError(async (req,res,next)=>{
     const {userName,email,password}=req.body;
     const cartItems=[];
-    const user=await User.create({userName,email,password,cartItems});
+    const savedAddresses=[];
+    const user=await User.create({userName,email,password,cartItems,savedAddresses});
     return res.status(200).json(user);
 
 })

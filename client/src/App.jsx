@@ -20,6 +20,8 @@ import AddAddress from './pages/AddAddress'
 import OrderDetails from './pages/OrderDetails'
 import { BsShopWindow } from 'react-icons/bs'
 import useAuth from './hooks/useAuth'
+import ShippingAddress from './pages/ShippingAddress'
+import PaymentInfo from './pages/PaymentInfo'
 
 const ROLES={
   'USER':2001,
@@ -155,7 +157,17 @@ const router=createBrowserRouter([
         },
       
       ]
-    }]
+    },
+    {
+      path:"/place-order/shipping-address/:id",
+      element:<ShippingAddress />
+    },
+    {
+      path:"/place-order/payment-options/:id",
+      element:<PaymentInfo />
+    },
+  ],
+    
   }
 ])
 

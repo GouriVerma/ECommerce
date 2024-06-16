@@ -4,6 +4,7 @@ import { Outlet, Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import MyAccountTopBar from '../components/MyAccountSidebarMobile'
 import { BsFilterLeft } from "react-icons/bs";
+import useAuth from '../hooks/useAuth'
 
 const options=[
   {path:"/my-account/personal-information",linkName:"Personal Information"},
@@ -17,14 +18,16 @@ const options=[
 
 const MyAccount = () => {
   const location=useLocation();
-  const id=location.pathname.split("/")[3];
-  const activeTab=options.filter((option)=>option.path==location.pathname.split("/"+id)[0])[0].linkName;
+  const {auth}=useAuth();
+  const id=auth._id;
+  // const activeTab=options.filter((option)=>option.path==location.pathname.split("/"+id)[0])[0].linkName;
   const [openDialog,setOpenDialog]=useState(false);
+  console.log(options.filter((option)=>option.path==location.pathname.split("/"+id)[0]));
 
 
-  useEffect(()=>{
-    setOpenDialog(false);
-  },[activeTab])
+  // useEffect(()=>{
+  //   setOpenDialog(false);
+  // },[activeTab])
 
   const handleClose=()=>{
     setOpenDialog(false);
@@ -40,7 +43,7 @@ const MyAccount = () => {
       
       {/* filters in mobile */}
       <div className={`md:hidden shadow-2xl absolute w-56 h-[87vh] top-16 bg-white z-10 transition-all duration-500 ${openDialog?"-translate-x-4":"-translate-x-60"}`}>
-        <MyAccountTopBar activeTab={activeTab} handleClose={handleClose} />
+        <MyAccountTopBar handleClose={handleClose} />
       </div>
       
       <Outlet />

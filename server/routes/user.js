@@ -2,6 +2,7 @@ const {Router}=require("express");
 const {handleGetUser,handleUpdateUser,handleDeleteUser,handleGetAllUsers,handleGetUserByAdmin,handleDeleteUserByAdmin,handleUpdateUserRoleByAdmin}=require("../controllers/user");
 const {restrictTo}=require("../middleware/auth");
 const { handleAddToCart, handleDeleteFromCart, handleUpdateItemInCart, handleGetAllCartItems } = require("../controllers/cart");
+const {handleGetMyAllAddresses,handleAddNewAddress,handleUpdateAddress,handleDeleteAddress}=require("../controllers/address")
 
 const router=Router();
 
@@ -17,10 +18,18 @@ router.route("/cart/:id")
 .delete(handleDeleteFromCart)
 .put(handleUpdateItemInCart);
 
+
+router.route("/address/:id")
+.get(handleGetMyAllAddresses)
+.post(handleAddNewAddress)
+.delete(handleDeleteAddress)
+.put(handleUpdateAddress);
+
 router.route("/:id")
 .get(handleGetUser)
 .put(handleUpdateUser)
 .delete(handleDeleteUser); 
+
 
 
 

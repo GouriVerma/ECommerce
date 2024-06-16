@@ -3,7 +3,7 @@ import data from "../Assets/data";
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { MdClose, MdDelete } from "react-icons/md";
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { FaMinus, FaPlus, FaStar } from 'react-icons/fa6';
 
@@ -15,6 +15,7 @@ import { FaMinus, FaPlus, FaStar } from 'react-icons/fa6';
 const Cart = () => {
   const axiosPrivate=useAxiosPrivate();
   const {auth,setAuth}=useAuth();
+  const navigate=useNavigate();
 
   
 
@@ -209,10 +210,6 @@ const Cart = () => {
             <h3 className='text-gray-500 lg:text-lg'>Discount on MRP</h3>
             <h3 className='lg:text-lg text-green-600'>-₹{discountOnMRP}</h3>
           </div>
-          {/* <div className='flex justify-between items-center font-xlato'>
-            <h3 className='text-gray-500 lg:text-lg'>Coupon Discount</h3>
-            <h3 className='lg:text-lg text-green-600'>-₹179</h3>
-          </div> */}
           <div className='flex justify-between items-center font-xlato'>
             <h3 className='text-gray-500 lg:text-lg'>Shipping Fee</h3>
             
@@ -233,7 +230,7 @@ const Cart = () => {
             <h3 className='lg:text-lg font-semibold'>₹{totalAmount}</h3>
           </div>
 
-          <button className='bg-slate-900 text-white py-2 lg:text-lg tracking-wide font-semibold rounded-sm'>PLACE ORDER</button>
+          <button className='bg-slate-900 text-white py-2 lg:text-lg tracking-wide font-semibold rounded-sm' onClick={()=>navigate(`/place-order/shipping-address/${auth._id}`,{state:{'products':products,'orderInfo':{totalMRP,discountOnMRP,totalAmount,shippingFee}}})}>PLACE ORDER</button>
         </div>
       </div>
       
