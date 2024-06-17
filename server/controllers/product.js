@@ -17,9 +17,9 @@ const handleGetAllProducts = handleAsyncError(async (req, res, next) => {
 
 const handleCreateProduct = handleAsyncError(async (req, res, next) => {
 
-    const { name, smallDesc, desc, images, newPrice, oldPrice, discount, category, color, rating, stock, numOfReviews, reviews, gender } = req.body;
+    const { name, smallDesc, desc, images, newPrice, oldPrice, discount, category, color, rating, stock, numOfReviews, reviews, gender,brand } = req.body;
     const createdBy=req.user._id;
-    const product = await Product.create({ name, smallDesc, desc, images, newPrice, oldPrice, discount, category, color, rating, stock, numOfReviews, reviews, createdBy, gender });
+    const product = await Product.create({ name, smallDesc, desc, images, newPrice, oldPrice, discount, category, color, rating, stock, numOfReviews, reviews, createdBy, gender,brand });
     return res.status(200).json({ success: true, product });
 });
 

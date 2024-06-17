@@ -3,13 +3,13 @@ const validator=require("validator");
 
 const orderSchema=new Schema({
     shippingDetails:{
-        buildingInfo:{
+        houseAddress:{
             type:String,
-            required:[true,"Please Enter buildingInfo"]
+            required:[true,"Please Enter houseAddress"]
         },
-        areaInfo:{
+        areaAddress:{
             type:String,
-            required:[true,"Please Enter areaInfo"] 
+            required:[true,"Please Enter areaAddress"] 
         },
         city:{
             type:String,
@@ -27,16 +27,16 @@ const orderSchema=new Schema({
             type:String,
             required:[true,"Please Enter Country"]
         },
-        contactUserName:{
+        name:{
             type:String,
             required:[true,"Please Enter name"]
         },
-        contactEmail:{
+        email:{
             type:String,
             required:[true,"Please Enter email"],
             validate:[validator.isEmail,"Please enter a valid email"]
         },
-        contactPhoneNo:{
+        phone:{
             type:Number,
             required:[true,"Please Enter Phone no"]
         }
@@ -47,7 +47,7 @@ const orderSchema=new Schema({
                 type:String,
                 required:true,
             },
-            price:{
+            newPrice:{
                 type:Number,
                 required:true,
             },
@@ -76,44 +76,40 @@ const orderSchema=new Schema({
         ref:"user",
         required:true,
     },
-    paymentInfo:{
-        id:{
-            type:String,
-            required:true,
-        },
-        status:{
-            type:String,
-            required:true,
-        },
-        paidAt:{
-            type:Date,
+    // paymentInfo:{
+    //     id:{
+    //         type:String,
+    //         required:true,
+    //     },
+    //     status:{
+    //         type:String,
+    //         required:true,
+    //     },
+    //     paidAt:{
+    //         type:Date,
             
-        }
+    //     }
 
-    },
+    // },
 
     priceDetails:{
-        itemsPrice:{
+        totalMRP:{
             type:Number,
             required:true,
             default:0
         },
-        shippingPrice:{
+        shippingFee:{
             type:Number,
             required:true,
             default:0
         },
-        taxPrice:{
+       
+        discountOnMRP:{
             type:Number,
             required:true,
             default:0
         },
-        discountOnPrice:{
-            type:Number,
-            required:true,
-            default:0
-        },
-        totalPrice:{
+        totalAmount:{
             type:Number,
             required:true,
             default:0
@@ -125,7 +121,8 @@ const orderSchema=new Schema({
     orderStatus:{
         type:String,
         required:true,
-        default:"Processing"
+        default:"Order Placed",
+        enum:["Order Placed","Shipped","Arrived"]
     },
 
     deliveredAt:{

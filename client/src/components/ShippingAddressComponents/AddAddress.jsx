@@ -93,7 +93,7 @@ const AddAddress = ({handleAddressDialogBox}) => {
                 {/* building info */}
                 <div className='flex flex-col gap-2'>
                     <label className='sm:text-lg text-gray-700 font-xpoppins' htmlFor="">House Address</label>
-                    <input required className='border focus:outline-none rounded px-4 py-2 w-full' type="text" placeholder='House no, Flat no, Building no' value={address['homeAddress']} onChange={(e)=>setAddress(prev=>({...prev,homeAddress:e.target.value}))} />
+                    <input required className='border focus:outline-none rounded px-4 py-2 w-full' type="text" placeholder='House no, Flat no, Building no' value={address['houseAddress']} onChange={(e)=>setAddress(prev=>({...prev,houseAddress:e.target.value}))} />
                 </div>
                 {/* area info */}
                 <div className='flex flex-col gap-2'>

@@ -4,6 +4,9 @@ const mongoose=require("mongoose");
 const cookieParser=require("cookie-parser");
 const cors = require('cors')
 
+
+
+
 //Uncaught error exception
 process.on("uncaughtException",(err)=>{
     console.log(err.message);
@@ -15,11 +18,13 @@ process.on("uncaughtException",(err)=>{
 dotenv.config();
 
 
+
 //router
 const productRouter=require("./routes/product");
 const authRouter=require("./routes/auth");
 const userRouter=require("./routes/user");
 const orderRouter=require("./routes/order");
+const paymentRouter=require("./routes/payment");
 
 //middlewares
 const handleError=require("./middleware/error");
@@ -47,6 +52,7 @@ app.use("/api/product",productRouter);
 app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/order",orderRouter);
+app.use("/api/payment",paymentRouter);
 
 
 //errorHandler middleware to handle cast error

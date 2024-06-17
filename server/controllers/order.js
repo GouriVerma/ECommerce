@@ -7,13 +7,18 @@ const ErrorHandler=require("../utils/error");
 const handlePlaceOrder=handleAsyncError(async(req,res,next)=>{
     if(!req.user){
         return next(new ErrorHandler("You are not authenticated", 401));
+
     }
 
-    const {shippingDetails,orderItems,paymentInfo,priceDetails,createdAt}=req.body;
+    console.log(req.body);
+
+    const {shippingDetails,orderItems,priceDetails}=req.body;
     const user=req.user._id;
 
 
-    const order=await Order.create({shippingDetails,orderItems,user,paymentInfo,priceDetails,createdAt});
+    const order=await Order.create({shippingDetails,orderItems,user,priceDetails});
+
+    
     return res.status(200).json(order);
 
 

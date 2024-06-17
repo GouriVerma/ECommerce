@@ -15,13 +15,13 @@ const MyOrders = () => {
   const axiosPrivate=useAxiosPrivate();
 
   const [orders,setOrders]=useState([]);
-  const [fetch,setFetch]=useState(false);
+  
 
   useEffect(()=>{
     const fetchOrders=async()=>{
       console.log("auth",auth);
       try {
-        const res=await axiosPrivate.get(`http://localhost:8000/api/order/my-orders`,{headers:{'Authorization': `Bearer ${auth?.accessToken}`}});
+        const res=await axiosPrivate.get(`/order/my-orders`);
         console.log(res);
         setOrders(res?.data?.orders);
       } catch (error) {
@@ -33,12 +33,7 @@ const MyOrders = () => {
     //setOrders(data);
   },[])
 
-  const fetchProduct=async()=>{
-    console.log(auth);
-    const res=await axiosPrivate.get(`http://localhost:8000/api/order/my-orders`,{headers:{'Authorization': `Bearer ${auth?.accessToken}`}});
-    console.log(res);
-    
-  }
+  
 
   return (
     
@@ -56,8 +51,7 @@ const MyOrders = () => {
             {/* products section */}
             {orders && 
               <div className='flex flex-col space-y-4 w-full'>
-                 <button onClick={()=>fetchProduct()}>Fetch</button> 
-                 <button onClick={()=>refresh()}>Refresh</button>
+                 
               {
               orders.map((order)=>(
                 order.orderItems.map((orderProduct)=>(
@@ -73,7 +67,7 @@ const MyOrders = () => {
                       {/* info section */}
                       <div className='flex flex-col space-y-2'>
                         <h2 className='sm:text-lg font-semibold'>{orderProduct.name}</h2>
-                        <h3 className='text-gray-400'>Sold by: Genius Apparels Ltd.</h3>
+                        
 
                         {/* size and quantity option */}
                         <div className='flex text-sm text-gray-400 space-x-4'>
@@ -81,7 +75,11 @@ const MyOrders = () => {
                           <p className='bg-gray-100 rounded-sm px-1'>Qty: {orderProduct.quantity}</p>
                         </div>
 
-                        <p className='text-gray-600 font-sans font-medium'>Arriving Fri, May 24</p>
+                        <div>
+                          <h2 className='sm:text-lg font-semibold'>₹{orderProduct.newPrice}</h2>
+                        </div>
+
+                        
                       
                       </div>
 

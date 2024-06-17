@@ -7,8 +7,8 @@ const options=[
   {path:"/my-account/personal-information",linkName:"Personal Information"},
   {path:"/my-account/my-orders",linkName:"My Orders"},
   {path:"/my-account/manage-address",linkName:"Manage Address"},
-  {path:"/my-account/password-manager",linkName:"Password Manager"},
-  {path:"/my-account/payment-method",linkName:"Payment Method"},
+  // {path:"/my-account/password-manager",linkName:"Password Manager"},
+  // {path:"/my-account/payment-method",linkName:"Payment Method"},
   {path:"/my-account/logout",linkName:"Logout"},
 ]
 

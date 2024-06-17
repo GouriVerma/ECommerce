@@ -98,8 +98,7 @@ const Cart = () => {
 
   const updateCartItem=async (productId)=>{
     try {
-      console.log(JSON.stringify(productQuantities));
-      console.log(JSON.stringify(productSize));
+      
       const res=await axiosPrivate.put(`/user/cart/${auth._id}?cartProductId=${productId}`,{size:productSize[productId],quantity:productQuantities[productId]});
       console.log(res.data);
     } catch (error) {
@@ -129,7 +128,9 @@ const Cart = () => {
   },[])
 
   useEffect(()=>{
-    updateCartItem(updatedProductId);
+   if(updatedProductId){
+    updateCartItem(updatedProductId)
+   }
   },[productQuantities,productSize])
 
 

@@ -22,6 +22,9 @@ import { BsShopWindow } from 'react-icons/bs'
 import useAuth from './hooks/useAuth'
 import ShippingAddress from './pages/ShippingAddress'
 import PaymentInfo from './pages/PaymentInfo'
+import OrderPlacedSuccess from './pages/OrderPlacedSuccess'
+import OrderPlacedFailure from './pages/OrderPlacedFailure'
+import Logout from './pages/Logout'
 
 const ROLES={
   'USER':2001,
@@ -155,6 +158,10 @@ const router=createBrowserRouter([
         path: 'add-address/:id',
         element:<AddAddress />
         },
+        {
+        path: 'logout/:id',
+        element:<Logout />
+        },
       
       ]
     },
@@ -166,6 +173,15 @@ const router=createBrowserRouter([
       path:"/place-order/payment-options/:id",
       element:<PaymentInfo />
     },
+    {
+      path:"/order-success",
+      element:<OrderPlacedSuccess />
+    },
+    {
+      path:"/order-failure",
+      element:<OrderPlacedFailure />
+    },
+
   ],
     
   }

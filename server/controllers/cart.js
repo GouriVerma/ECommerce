@@ -41,7 +41,7 @@ const handleAddToCart=handleAsyncError(async(req,res,next)=>{
     }
 
     user.cartItems.push({name,newPrice,oldPrice,discount,quantity,size,product,image,brand,avgRating});
-    user.save({validateBeforeSave:true});
+    user.save({validateBeforeSave:false});
 
     return res.status(200).json(user.cartItems);
 
@@ -56,6 +56,8 @@ const handleDeleteFromCart=handleAsyncError(async(req,res,next)=>{
     if(req.user._id.toString()!==req.params.id.toString()){
         return next(new ErrorHandler("You can add item to your cart only",403));
     }
+
+    console.log(req.query);
     
     const id=req.user?._id;
 
@@ -71,9 +73,9 @@ const handleDeleteFromCart=handleAsyncError(async(req,res,next)=>{
     }
 
     const cartItems=user.cartItems.filter((item)=>item._id.toString()!==cartProductId.toString());
-    console.log(cartItems);
+    // console.log(cartItems);
     user.cartItems=cartItems;
-    user.save({validateBeforeSave:true});
+    user.save({validateBeforeSave:false});
 
     return res.status(200).json({cart:user.cartItems,success:true});
 
@@ -123,9 +125,26 @@ const handleUpdateItemInCart=handleAsyncError(async(req,res,next)=>{
     })
 
     
-    user.save({validateBeforeSave:true});
+    user.save({validateBeforeSave:false});
     return res.status(200).json({success:true,cart:user.cartItems});
 
 })
 
-module.exports={handleAddToCart,handleDeleteFromCart,handleUpdateItemInCart,handleGetAllCartItems}
+const handleDeleteCartItems=handleAsyncError(async(req,res,next)=>{
+    if(!req.user){
+        return next(new ErrorHandler("You are not logged in",401));
+    }
+
+    const user=await User.findById(req.user._id);
+    if(!user){
+        return next(new ErrorHandler("User not found",404));
+    }
+
+    user.cartItems=[];
+    user.save({validateBeforeSave:false});
+    return res.status(200).json(user);
+
+
+})
+
+module.exports={handleAddToCart,handleDeleteFromCart,handleUpdateItemInCart,handleGetAllCartItems,handleDeleteCartItems}
