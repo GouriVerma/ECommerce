@@ -7,6 +7,7 @@ import 'rc-slider/assets/index.css';
 import { RiFilter3Fill } from "react-icons/ri";
 import { MdClose } from 'react-icons/md';
 import axios from 'axios'
+import { BASE_URL } from '../api/axios';
 
 
 const categories=["Tshirt","Jacket","Jeans","Trousers","Formals"];
@@ -35,19 +36,19 @@ const Shop = ({gender}) => {
   }
 
   useEffect(()=>{
-    let link=`http://localhost:8000/api/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`
+    let link=`${BASE_URL}/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`
     if(selectedCategory && activeColor && gender){
-      link=`http://localhost:8000/api/product?category=${selectedCategory}&color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
+      link=`${BASE_URL}/product?category=${selectedCategory}&color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
       
     else if(selectedCategory){
-      link=`http://localhost:8000/api/product?category=${selectedCategory}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
+      link=`${BASE_URL}/product?category=${selectedCategory}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
     else if(activeColor){
-      link=`http://localhost:8000/api/product?color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
+      link=`${BASE_URL}/product?color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
     else if(gender){
-      link=`http://localhost:8000/api/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
+      link=`${BASE_URL}/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
     
     const fetchProducts=async()=>{
