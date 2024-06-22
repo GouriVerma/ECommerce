@@ -3,6 +3,7 @@ import { MdAdd } from 'react-icons/md';
 import useAuth from '../../hooks/useAuth'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AddAddress from './AddAddress';
+import Loading from '../Loading';
 
 const SavedAddress = ({setAddress}) => {
   const {auth}=useAuth();
@@ -11,6 +12,7 @@ const SavedAddress = ({setAddress}) => {
   const [savedAddress,setSavedAddress]=useState([]);
   const [selectedAddress,setSelectedAddress]=useState({});
   const [newAddressDialogOpen,setNewAddressDialogOpen]=useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleAddressDialogBox=()=>{
     setNewAddressDialogOpen(false);
@@ -20,11 +22,14 @@ const SavedAddress = ({setAddress}) => {
     const fetchAddresses=async()=>{
       
       try {
+        setLoading(true);
         const res=await axiosPrivate.get(`/user/address/${auth._id}`);
         console.log(res.data);
         setSavedAddress(res.data);
       } catch (error) {
         console.log(error.response.data.error);
+      } finally{
+        setLoading(false);
       }
 
     }
@@ -34,14 +39,18 @@ const SavedAddress = ({setAddress}) => {
 
 
   return (
+    loading ? 
+      <Loading/> 
+    
+    :
     <div>
-      <h2 className='sm:text-2xl text-xl font-xpoppins'>Saved Address</h2>
+      <h2 className='sm:text-2xl text-xl font-xpoppins'>Select Address</h2>
       <div className='flex gap-2 flex-col mt-8'>
         {
         savedAddress.map((address)=>(
-          <div key={address._id} className='flex space-x-4 border p-4 rounded'>
+          <div key={address._id} className='flex space-x-4 border p-4 rounded cursor-pointer' onClick={()=>{setSelectedAddress(address); setAddress(address)}}>
             <div>
-              <input type="radio" checked={address._id==selectedAddress._id} onChange={()=>{setSelectedAddress(address); setAddress(address)}} />
+              <input type="radio" checked={address._id==selectedAddress._id} onChange={()=>{setSelectedAddress(address); setAddress(address)}}  />
             </div>
             <div className='flex flex-col space-y-2 font-xlato '>
               <h2 className='font-semibold sm:text-lg'>{address.name}</h2>
@@ -70,6 +79,7 @@ const SavedAddress = ({setAddress}) => {
         
       </div>
     </div>
+    
   )
 }
 

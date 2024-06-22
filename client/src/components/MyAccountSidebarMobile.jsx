@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { IoMdCloseCircleOutline, IoMdClose } from "react-icons/io";
+import useAuth from '../hooks/useAuth';
 
 
 const options=[
@@ -12,16 +13,22 @@ const options=[
   {path:"/my-account/logout",linkName:"Logout"},
 ]
 
-const MyAccountTopBar = ({activeTab,handleClose}) => {
+const MyAccountTopBar = ({handleClose}) => {
+  const {auth}=useAuth();
   const location=useLocation();
-  const id=location.pathname.split("/")[3];
+  const path=location.pathname.split("/"+auth._id)[0];
+
+  useEffect(()=>{
+    handleClose();
+  },[path])
+
   return (
     <div className='md:hidden text-sm sm:text-base flex '>
       
       <div className='mt-10'>
         {
           options.map((option)=>(
-            <Link to={option.path+'/'+id} key={option.linkName} className='w-full'><button className={`w-full text-left lg:text-lg border-b border-gray-300 px-3 py-3 font-xpoppins text-gray-700 ${activeTab===option.linkName && 'text-white bg-slate-800'}`}>{option.linkName}</button></Link>
+            <Link to={option.path+'/'+auth._id} key={option.linkName} className='w-full'><button className={`w-full text-left lg:text-lg text-base border-b border-gray-300 px-3 py-3 font-xpoppins text-gray-700 ${path===option.path && 'text-white bg-slate-800'}`}>{option.linkName}</button></Link>
           ))
         }
       </div>

@@ -22,7 +22,7 @@ const MyAccount = () => {
   const id=auth._id;
   // const activeTab=options.filter((option)=>option.path==location.pathname.split("/"+id)[0])[0].linkName;
   const [openDialog,setOpenDialog]=useState(false);
-  console.log(options.filter((option)=>option.path==location.pathname.split("/"+id)[0]));
+ 
 
 
   // useEffect(()=>{

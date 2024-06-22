@@ -36,8 +36,8 @@ const userSchema=Schema({
         
         public_id:{
         type:String,
-        default:"1987491240174901",
-        required:true
+        
+        
         },
         url:{
             type:String,
@@ -153,7 +153,7 @@ const userSchema=Schema({
                 required:[true,"Please enter area address in address"],   
             },
             pinCode:{
-                type:Number,
+                type:String,
                 required:[true,"Please enter pincode in address"],   
             },
             city:{
@@ -213,7 +213,7 @@ userSchema.static("matchPasswordAndGenerateToken",async function (email,password
 
     
     
-    const result= {_id:user._id,userName:user.userName,email,password,accessToken,refreshToken,cartItemsCount:user.cartItems.length};
+    const result= {_id:user._id,userName:user.userName,email,password,accessToken,refreshToken,cartItemsCount:user.cartItems.length,profileUrl:user.profileUrl.url};
     return result;
 
 });

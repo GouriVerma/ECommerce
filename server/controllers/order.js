@@ -3,6 +3,16 @@ const Product = require("../models/product");
 const handleAsyncError = require("../utils/asyncError");
 const ErrorHandler=require("../utils/error");
 
+async function updateStock(id,quantity){
+    const product=await Product.findById(id);
+    
+
+    product.stock-=quantity;
+    await product.save({validateBeforeSave:false});
+
+
+}
+
 
 const handlePlaceOrder=handleAsyncError(async(req,res,next)=>{
     if(!req.user){
@@ -17,6 +27,8 @@ const handlePlaceOrder=handleAsyncError(async(req,res,next)=>{
 
 
     const order=await Order.create({shippingDetails,orderItems,user,priceDetails});
+    orderItems.forEach(async(orderProduct)=>await updateStock(orderProduct.product,orderProduct.quantity))
+    
 
     
     return res.status(200).json(order);
@@ -64,35 +76,43 @@ const handleGetMyAllOrders = handleAsyncError(async (req, res, next) => {
 
 });
 
-async function updateStock(id,quantity){
-    const product=await Product.findById(id);
-    
 
-    product.stock-=quantity;
-    await product.save({validateBeforeSave:false});
-
-
-}
 
 //Admin only
 const updateOrderStatus=handleAsyncError(async (req,res,next)=>{
     const order=await Order.findById(req.params.id);
+    const orderProductId=req.query?.orderProductId;
+
+    
 
     if(!order){
         return next(new ErrorHandler("Order not found", 404));
     }
 
-    if(order.orderStatus==="Delivered"){
+    if(!orderProductId){
+        return next(new ErrorHandler("Order Product Id not given",400));
+    }
+
+    const orderProduct=order.orderItems.find((orderProduct)=>orderProduct._id==orderProductId);
+    if(!orderProduct){
+        return next(new ErrorHandler("Order Product not found", 404));
+    }
+
+    if(orderProduct.orderStatus==="Delivered"){
         return next(new ErrorHandler("Product is already delivered",400));
     }
 
-    order.orderStatus=req.body?.status;
 
-    if(req.body.status=="Delivered"){
-        order.deliveredAt=Date.now();
-        order.orderItems.forEach(async (orderProduct)=>{
-            await updateStock(orderProduct.product,orderProduct.quantity);
-        })
+    if(req.body?.status=="Shipped"){
+        orderProduct.orderStatus=req.body?.status;
+        orderProduct.shippedAt=new Date();
+        
+      //  await updateStock(orderProduct.product,orderProduct.quantity);
+        
+    }
+    else if(req.body?.status=="Delivered"){
+        orderProduct.orderStatus=req.body?.status;
+        orderProduct.deliveredAt=new Date();
     }
 
     await order.save({validateBeforeSave:false});

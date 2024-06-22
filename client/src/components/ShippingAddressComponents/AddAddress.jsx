@@ -5,6 +5,7 @@ import Select from 'react-select';
 import PhoneInput from 'react-phone-number-input'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
+import Loading from '../Loading';
 
 const AddAddress = ({handleAddressDialogBox}) => {
     const axiosPrivate=useAxiosPrivate();
@@ -12,10 +13,9 @@ const AddAddress = ({handleAddressDialogBox}) => {
 
     let countryData=Country.getAllCountries();
     const [stateData,setStateData]=useState([]);
-    const [state,setState]=useState(null);
     const [cityData,setCityData]=useState([]);
     const [address,setAddress]=useState({name:"",email:"",phone:"",houseAddress:"",areaAddress:"",pinCode:"",city:null,state:null,country:null});
-
+    const [loading, setLoading] = useState(false);
 
     const countryOptions=[{}];
     countryData.forEach((country)=>countryOptions.push({value:country.isoCode, label:country.name}))
@@ -23,13 +23,17 @@ const AddAddress = ({handleAddressDialogBox}) => {
     const handleSubmit=async (e)=>{
         console.log(address);
         e.preventDefault();
+        
         try {
+            setLoading(true);
             const res=await axiosPrivate.post(`/user/address/${auth._id}`,{...address,country:address.country.label,state:address.state.label,city:address.city.label});
-            console.log(res);
+            console.log("add address",res.data);
             handleAddressDialogBox();
             
         } catch (error) {
             console.log(error);
+        } finally{
+            setLoading(false);
         }
     }
 
@@ -58,6 +62,9 @@ const AddAddress = ({handleAddressDialogBox}) => {
     
   return (
     <div>
+    {loading ?
+        <Loading />
+    :
       <div>
             <h2 className='sm:text-2xl text-xl font-xpoppins'>Add New Address</h2>
             
@@ -133,6 +140,7 @@ const AddAddress = ({handleAddressDialogBox}) => {
                 <button className='w-full border-gray-300 rounded flex items-center justify-center py-3 px-2 sm:text-lg font-xpoppins border hover:bg-orange-500 hover:text-white'><MdAdd className='w-7 h-7' />Add Address</button>
             </form>
         </div>
+    }    
     </div>
   )
 }

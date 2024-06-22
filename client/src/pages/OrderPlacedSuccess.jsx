@@ -8,10 +8,14 @@ const OrderPlacedSuccess = () => {
     const navigate=useNavigate();
   return (
     <div className='pt-24 pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4 h-[80vh] flex items-center justify-center'>
-      <div className='border p-4 rounded shadow-2xl w-3/4 h-1/2 flex flex-col items-center justify-between'>
+      <div className='border p-4 rounded shadow-2xl w-3/4 h-3/5 flex flex-col items-center justify-between'>
         <div className='flex flex-col items-center space-y-8 mt-8'>
             <TiTick className='bg-green-800 text-white w-12 h-12 rounded-full' />
-            <h2 className='font-xpoppins text-xl'>Order Placed Successfully</h2>
+            <div className='flex flex-col items-center'>
+              <h2 className='font-xpoppins text-xl'>Order Placed Successfully</h2>
+              <p>Thanks for placing order :)</p>
+            </div>
+
         </div>
         <div className='font-semibold font-xpoppins'>
             

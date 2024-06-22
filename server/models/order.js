@@ -16,7 +16,7 @@ const orderSchema=new Schema({
             required:[true,"Please Enter city"]
         },
         pinCode:{
-            type:Number,
+            type:String,
             required:[true,"Please Enter pincode"]
         },
         state:{
@@ -59,6 +59,10 @@ const orderSchema=new Schema({
                 type:String,
                 required:true,
             },
+            smallDesc:{
+                type:String,
+                
+            },
             size:{
                 type:String,
                 enum:["XS","S","M","L","XL","XXL"],
@@ -68,7 +72,22 @@ const orderSchema=new Schema({
                 type:Schema.Types.ObjectId,
                 ref:"product",
                 required:true,
-            }
+            },
+            orderStatus:{
+                type:String,
+                required:true,
+                default:"Order Placed",
+                enum:["Order Placed","Shipped","Delivered"]
+            },
+
+            shippedAt:{
+                type:Date
+            },
+            
+        
+            deliveredAt:{
+                type:Date
+            },
         }
     ],
     user:{
@@ -118,16 +137,8 @@ const orderSchema=new Schema({
 
 
     },
-    orderStatus:{
-        type:String,
-        required:true,
-        default:"Order Placed",
-        enum:["Order Placed","Shipped","Arrived"]
-    },
 
-    deliveredAt:{
-        type:Date
-    },
+    
 
 
 

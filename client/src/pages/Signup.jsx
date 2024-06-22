@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../api/axios';
+import Loading from '../components/Loading';
 
 
 const Signup = () => {
@@ -10,10 +11,13 @@ const Signup = () => {
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
   const [error,setError]=useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword,setShowPassword]=useState(false);
 
   const handleSubmit=async (e)=>{
     e.preventDefault();
     try {
+      setLoading(true);
       const res=await axios.post(`${BASE_URL}/auth/signup`,{userName,email,password});
       console.log(res.data);
       navigate("/login",{replace:true})
@@ -21,17 +25,29 @@ const Signup = () => {
     } catch (error) {
       setError(error.response.data.error);
       console.log(error);
+    } finally{
+      setLoading(false);
     }
+
     
 
   }
+
+  const handleToggle=()=>{
+    console.log(showPassword);
+  }
   return (
     <div className='m-0 p-0'>
+      {loading ?
+          <Loading />
+        :
 
-      {/* sign in */}
+      //sign in
       <div className='flex w-full justify-center'>
+        
+        
 
-        {/* form part */}
+        {/* //form */}
         <div className='lg:w-1/2 w-full px-8 py-8 space-y-4'>
 
 
@@ -60,6 +76,7 @@ const Signup = () => {
               onChange={(e)=>{setUserName(e.target.value);
                 setError(null);
               }}
+              
               value={userName} />
             </div>
             <div className='flex flex-col sm:text-lg font-xlato space-y-2'>
@@ -70,21 +87,25 @@ const Signup = () => {
               className='focus:outline-none border px-3 py-3 rounded border-gray-300 text-base' 
               placeholder='Email Address'
               onChange={(e)=>setEmail(e.target.value)} 
-              value={email}/>
+              value={email}
+              autoComplete='on'/>
             </div>
             <div className='flex flex-col sm:text-lg font-xlato space-y-2'>
               <label htmlFor="" className=''>Password</label>
               <input
                required 
-               type="password" 
+               type={`${showPassword?"text":"password"}`}
                className='focus:outline-none border px-3 py-3 rounded border-gray-300 text-base ' 
                placeholder='Password'
                onChange={(e)=>setPassword(e.target.value)} 
                value={password} />
-              <Link className='flex justify-end font-semibold text-gray-800 font-xlato text-base'>Forgot Password?</Link>
+              <div className='flex items-center gap-1'>
+                <input type="checkbox" id='showPassword' className='text-slate-800 focus:ring-0 rounded-sm' checked={showPassword} onChange={(e)=>{setShowPassword(e.target.checked)}} />
+                <label htmlFor="showPassword" className=' text-gray-800 font-xlato text-base cursor-pointer' onClick={handleToggle} >Show Password</label>
+              </div>
             </div>
 
-            <button className='bg-slate-800 text-white py-4 rounded sm:text-lg font-xlato hover:bg-orange-500' type='submit'>SIGN IN</button>
+            <button className='bg-slate-800 text-white py-4 rounded sm:text-lg font-xlato hover:bg-orange-500' type='submit'>SIGN UP</button>
 
             <div className='mx-auto font-xlato'>
               <p>Already have an account? <Link to="/login" className='font-semibold'>Sign in</Link></p>
@@ -96,7 +117,10 @@ const Signup = () => {
         <div className='lg:w-1/2 lg:flex hidden'>
           <img src="https://img.freepik.com/premium-photo/young-beautiful-woman-wearing-black-evening-dress-posing-black-background_254969-2242.jpg" alt="" className='w-full h-[100vh] object-cover' />
         </div>
+        
       </div>
+      }
+    
     </div>
   )
 }

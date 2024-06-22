@@ -6,6 +6,8 @@ import OrderSummary from '../components/ShippingAddressComponents/OrderSummary';
 import { GiMoneyStack } from "react-icons/gi";
 import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
 
 const PaymentInfo = () => {
     const axiosPrivate=useAxiosPrivate();
@@ -14,8 +16,21 @@ const PaymentInfo = () => {
     const navigate=useNavigate();
     const [info,setInfo]=useState({products:[],orderInfo:{},address:{}});
     const [paymentOption,setPaymentOption]=useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const paymentOpeions=[{label:'Cash on Delivery',icon:<GiMoneyStack />}]
+    const paymentOptions=[{label:'Cash on Delivery',icon:<GiMoneyStack />}]
+
+    const notifySelectPaymentOption=()=>toast('Select Payment Option', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        
+    });
 
     useEffect(()=>{
         if(!location.state){
@@ -34,22 +49,35 @@ const PaymentInfo = () => {
     }
 
     const handleProceed=async ()=>{
-        try {
-            const res=await axiosPrivate.post('/order/new',{shippingDetails:info.address,priceDetails:info.orderInfo,orderItems:info.products});
-            console.log(res.data);
-            const res2=await axiosPrivate.delete('/user/cart/delete');
-            console.log(res2.data);
-            setAuth(prev=>({...prev,cartItemsCount:0}))
-            navigate("/order-success");
-        } catch (error) {
-            console.log(error);
-            navigate("/order-failure");
+        if(!paymentOption){
+            notifySelectPaymentOption();
         }
+        else{
+            try {
+                setLoading(true);
+                const res=await axiosPrivate.post('/order/new',{shippingDetails:info.address,priceDetails:info.orderInfo,orderItems:info.products});
+                console.log(res.data);
+                const res2=await axiosPrivate.delete('/user/cart/delete');
+                console.log(res2.data);
+                setAuth(prev=>({...prev,cartItemsCount:0}))
+                navigate("/order-success");
+            } catch (error) {
+                console.log(error);
+                navigate("/order-failure");
+            } finally{
+                setLoading(false);
+              }
+        }
+        
     }
 
     
   return (
     <div className='pt-24 pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4'>
+
+        {loading?
+        <Loading />
+        :
         <div>
             {/* timeline */}
             <PlaceOrderTimeline activePosition={2} />
@@ -64,9 +92,10 @@ const PaymentInfo = () => {
 
                             <div className='flex flex-col space-y-2 mt-8 items-center'>
                                 {
-                                    paymentOpeions.map((option,i)=>(
+                                    paymentOptions.map((option,i)=>(
                                         
-                                        <button  key={i} className='border border-slate-300 p-4 rounded text-center font-xpoppins w-full hover:bg-gray-200 sm:text-lg text-gray-700 ' onClick={()=>handleSelectPaymentOption(option)}>
+                                        <button  key={i} className={`${option.label==paymentOption && "bg-orange-500 text-white"} border border-slate-300 p-3 rounded text-center font-xpoppins w-full hover:bg-orange-500 sm:text-lg text-gray-700` }
+                                            onClick={()=>handleSelectPaymentOption(option)}>
                                             {option.label}
                                         </button>
                                         
@@ -75,9 +104,7 @@ const PaymentInfo = () => {
                             </div>
                         </div>
 
-                        <button className='w-full border-gray-300 rounded flex items-center justify-center py-3 px-2 sm:text-lg font-xpoppins text-white bg-slate-800 hover:bg-orange-500'
-                        onClick={handleProceed}
-                        >Proceed for Checkout</button>
+                        
                         
                         
                     </div>
@@ -111,11 +138,22 @@ const PaymentInfo = () => {
                         </div>
                         
                     </div>
+
+                    <div>
+                        <button className='w-full border-gray-300 rounded flex items-center justify-center py-3 px-2 sm:text-lg font-xpoppins text-white bg-slate-800 hover:bg-orange-500'
+                        onClick={handleProceed}
+                        >Proceed for Checkout</button>
+                    </div>  
                     
-                </div>       
+                </div> 
+
+                    
 
             </div>
+            
         </div>
+
+        }
       
     </div>
   )

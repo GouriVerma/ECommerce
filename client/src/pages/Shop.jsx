@@ -8,23 +8,25 @@ import { RiFilter3Fill } from "react-icons/ri";
 import { MdClose } from 'react-icons/md';
 import axios from 'axios'
 import { BASE_URL } from '../api/axios';
+import Loading from '../components/Loading';
 
 
-const categories=["Tshirt","Jacket","Jeans","Trousers","Formals"];
-const colors=["black","white","red","teal","pink","blue"]
+const categories=["Tshirt","Jacket","Jeans"];
+const colors=["black","gray","red","teal","pink","blue"]
 
 
 const Shop = ({gender}) => {
   const [products,setProducts]=useState([]);
   const [activeColor,setActiveColor]=useState("");
-  const [valueRange,setValueRange]=useState([1500,3500]);
+  const [valueRange,setValueRange]=useState([0,5000]);
   const [activeFilterForMobile,setActiveilterForMobile]=useState("Category");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openFilter,setOpenFilter]=useState(false);
+  const [loading, setLoading] = useState(false);
 
   const clearfilters=()=>{
     setActiveColor("");
-    setValueRange([1500,3500]);
+    setValueRange([0,5000]);
     setSelectedCategory("");
     setActiveilterForMobile("Category");
   }
@@ -37,31 +39,51 @@ const Shop = ({gender}) => {
 
   useEffect(()=>{
     let link=`${BASE_URL}/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`
-    if(selectedCategory && activeColor && gender){
+    if(selectedCategory && activeColor && gender!==undefined){
       link=`${BASE_URL}/product?category=${selectedCategory}&color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
       
-    else if(selectedCategory){
+    else if(selectedCategory && gender!==undefined){
       link=`${BASE_URL}/product?category=${selectedCategory}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
-    else if(activeColor){
+    else if(activeColor && gender!==undefined){
       link=`${BASE_URL}/product?color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
-    else if(gender){
+    else if(selectedCategory && activeColor){
+      link=`${BASE_URL}/product?category=${selectedCategory}&color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`;
+    }
+    else if(gender!==undefined){
       link=`${BASE_URL}/product?newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}&gender=${gender}`;
     }
-    
+    else if(selectedCategory){
+      link=`${BASE_URL}/product?category=${selectedCategory}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`;
+    }
+    else if(activeColor){
+      link=`${BASE_URL}/product?color=${activeColor}&newPrice[gt]=${valueRange[0]}&newPrice[lt]=${valueRange[1]}`
+    }
+    console.log(link);
     const fetchProducts=async()=>{
-      const res=await axios.get(link);
-      console.log(res);
-      setProducts(res.data);
+      try {
+        setLoading(true);
+        const res=await axios.get(link);
+        console.log(res);
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally{
+        setLoading(false);
+      }
     }
     fetchProducts();
   },[selectedCategory,activeColor,valueRange,gender])
 
 
   return (
-    <div className='pt-16 pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4 min-h-screen'>
+    <div className='pt-16 pb-12 max-w-screen-2xl mx-auto container xl:px-28 px-4'>
+
+      {loading?
+      <Loading />
+      :
       <div>
 
         {/* filters button */}
@@ -129,12 +151,8 @@ const Shop = ({gender}) => {
                     <div
                       onClick={()=>setActiveColor(color)}
                       key={index}
-                      className={`w-16 h-8 border rounded-full text-white ${
-                        color === "black" || color === "white"
-                          ? `bg-${color}`
-                          : `bg-${color}-700`
-                      }
-                        ${activeColor==color && "border-2 border-slate-900 w-[66px] h-10"}
+                      className={`w-16 h-8 border rounded-full text-white ${color=='black' && "bg-black"} ${color=='gray' && "bg-gray-100"} ${color=='teal' && "bg-teal-700"} ${color=='pink' && "bg-pink-600"} ${color=='blue' && "bg-blue-600"} ${color=='red' && "bg-red-600"}
+                      ${activeColor==color && "border-2 border-slate-900 w-[66px] h-10"}
                       `}
                       
                     >
@@ -200,11 +218,7 @@ const Shop = ({gender}) => {
                   <div
                     onClick={()=>setActiveColor(color)}
                     key={index}
-                    className={`w-5 h-5 border rounded-full ${
-                      color === "black" || color === "white"
-                        ? `bg-${color}`
-                        : `bg-${color}-700`
-                    }
+                    className={`w-5 h-5 border rounded-full ${color=='black' && "bg-black"} ${color=='gray' && "bg-gray-100"} ${color=='teal' && "bg-teal-700"} ${color=='pink' && "bg-pink-600"} ${color=='blue' && "bg-blue-600"} ${color=='red' && "bg-red-600"}
                       ${activeColor==color && "border-2 border-slate-900 w-6 h-6"}
                     `}
                     
@@ -234,9 +248,9 @@ const Shop = ({gender}) => {
             <button className='mt-4 py-3 rounded-sm hover:bg-orange-500 bg-slate-900 text-white' onClick={clearfilters}>Clear Filters</button>
           </div>
           
-          
+          {products.length>0 ?
 
-          {/* products section */}
+          //products section
           <div className='grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 sm:gap-4 gap-2 mx-auto'>
             {
               products.map((product)=>(
@@ -244,8 +258,16 @@ const Shop = ({gender}) => {
               ))
             }
           </div>
+
+          :
+              <div className='flex items-center flex-col space-y-4'>
+                <img className='object-cover sm:w-[768px] sm:h-auto ' src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg?t=st=1718801791~exp=1718805391~hmac=80179e71ddf7c7a28634e5b3d1f2ae0c34c780acfd83b931aead35d749229f4a&w=1380" alt="" />
+                <h1 className='sm:text-3xl text-2xl font-xlato font-semibold text-slate-800'>No results :(</h1>
+              </div>
+          }
         </div>
       </div>
+      }
     </div>
   )
 }

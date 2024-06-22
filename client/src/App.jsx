@@ -14,17 +14,28 @@ import MyAccount from './pages/MyAccount'
 import PersonalInformation from './components/PersonalInformation'
 import ManageAddress from './components/ManageAddress'
 import MyOrders from './components/MyOrders'
-import PaymentMethod from './components/PaymentMethod'
 import PasswordManager from './components/PasswordManager'
 import AddAddress from './pages/AddAddress'
-import OrderDetails from './pages/OrderDetails'
-import { BsShopWindow } from 'react-icons/bs'
+import OrderProductDetails from './pages/OrderProductDetails'
 import useAuth from './hooks/useAuth'
 import ShippingAddress from './pages/ShippingAddress'
 import PaymentInfo from './pages/PaymentInfo'
 import OrderPlacedSuccess from './pages/OrderPlacedSuccess'
 import OrderPlacedFailure from './pages/OrderPlacedFailure'
 import Logout from './pages/Logout'
+import Loading from './components/Loading'
+import ForgotPassword from './pages/ForgotPassword'
+
+const ScrollToTop = () => {
+  // Extracts pathname property(key) from an object
+  const { pathname } = useLocation();
+
+  // Automatically scrolls to top whenever pathname changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+}
+
 
 const ROLES={
   'USER':2001,
@@ -33,25 +44,27 @@ const ROLES={
 
 const LayoutComponent=()=>{
   return (
-    <div>
+    <div className=''>
       <Navbar />
       <Outlet />
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
 
 const ReqAuthComponent=()=>{
   //check auth
-  const axiosPrivate=useAxiosPrivate();
+
   const {auth}=useAuth();
   const location=useLocation();
   return(
     auth?.userName?
-    <div>
+    <div className=''>
       <Navbar />
       <Outlet />
       <Footer />
+      <ScrollToTop />
     </div>
     :
     <Navigate to="/login" replace={true} state={{from:location}} />
@@ -101,6 +114,10 @@ const router=createBrowserRouter([
     {
       path:"/product/:id",
       element:<Product />
+    },
+    {
+      path:"/forgot-password/:id",
+      element:<ForgotPassword />
     }
   ]
   },
@@ -128,7 +145,7 @@ const router=createBrowserRouter([
     },
     {
       path:"/order/:id",
-      element:<OrderDetails />
+      element:<OrderProductDetails />
     },
     {
       path: "/my-account",
@@ -149,10 +166,6 @@ const router=createBrowserRouter([
         {
         path: 'password-manager/:id',
         element:<PasswordManager />
-        },
-        {
-        path: 'payment-method/:id',
-        element:<PaymentMethod />
         },
         {
         path: 'add-address/:id',
@@ -195,7 +208,8 @@ const router=createBrowserRouter([
 
 function App() {
   
-
+  
+  
   return (
     <RouterProvider router={router} />
   )

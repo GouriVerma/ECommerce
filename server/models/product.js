@@ -9,6 +9,7 @@ const productSchema=new Schema({
     },
     smallDesc:{
         type:String,
+        required:[true,"Please enter product small description"]
 
     },
     desc:{
@@ -38,6 +39,7 @@ const productSchema=new Schema({
     },
     discount:{
         type:Number,
+        default:0
         
     },
     
@@ -78,7 +80,7 @@ const productSchema=new Schema({
            },
            description:{
             type:String,
-            required:true
+            
            },
 
            imagesUrl:[

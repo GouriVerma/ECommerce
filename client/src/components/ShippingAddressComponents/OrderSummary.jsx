@@ -18,7 +18,7 @@ const OrderSummary = ({products}) => {
 
                         {/* info section */}
                         <div className='flex flex-col space-y-2'>
-                            <h3 className='font-semibold'>{product.name}</h3>
+                            <h3 className='font-semibold'>{product.name.slice(0,25)}...</h3>
                             <h3 className='text-gray-400'>{product.brand}</h3>
 
                             {/* size and quantity option */}
