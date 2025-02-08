@@ -51,8 +51,8 @@ This is a full-stack E-Commerce web application built using the MERN (MongoDB, E
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/mern-ecommerce.git
-   cd mern-ecommerce
+   git clone https://github.com/GouriVerma/ECommerce.git
+   cd Ecommerce
    ```
 2. Install dependencies for both backend and frontend:
    ```sh
